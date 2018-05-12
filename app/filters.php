@@ -68,3 +68,13 @@ add_filter('comments_template', function ($comments_template) {
     );
     return template_path(locate_template(["views/{$comments_template}", $comments_template]) ?: $comments_template);
 }, 100);
+
+/**
+ * Remove unnecesarry stuff from TinyMCE
+ */
+add_filter('tiny_mce_before_init', function ($settings) {
+    $settings['block_formats'] = 'Paragraph=p;Heading 2=h2;Heading 3=h3;';
+    $settings['toolbar1'] = 'formatselect,bold,italic,bullist,numlist,alignleft,aligncenter,alignright,link,spellchecker,dfw,wp_adv';
+    $settings['toolbar2'] = 'pastetext,removeformat,charmap,undo,redo,wp_help';
+    return $settings;
+});

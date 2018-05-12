@@ -1,5 +1,5 @@
 {
-  "name": "roots/sage",
+  "name": "21stdigital/sage",
   "type": "wordpress-theme",
   "license": "MIT",
   "description": "WordPress starter theme with a modern development workflow",
@@ -21,7 +21,9 @@
       "homepage": "https://github.com/qwp6t"
     }
   ],
-  "keywords": ["wordpress"],
+  "keywords": [
+    "wordpress"
+  ],
   "support": {
     "issues": "https://github.com/roots/sage/issues",
     "forum": "https://discourse.roots.io/"
@@ -43,7 +45,9 @@
     "roots/sage-installer": "~1.3"
   },
   "scripts": {
-    "test": ["phpcs"],
+    "test": [
+      "phpcs"
+    ],
     "post-create-project-cmd": [
       "Roots\\Sage\\Installer\\ComposerScript::postCreateProject"
     ]

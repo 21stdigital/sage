@@ -40,7 +40,9 @@ add_action('after_setup_theme', function () {
      * @link https://developer.wordpress.org/reference/functions/register_nav_menus/
      */
     register_nav_menus([
-        'primary_navigation' => __('Primary Navigation', 'sage')
+        'main_navigation' => __('Main Navigation', 'sage'),
+        'footer_navigation' => __('Footer Navigation', 'sage'),
+        'breadcrumb_navigation' => __('Breadcrumb Navigation', 'sage'),
     ]);
 
     /**
@@ -126,3 +128,10 @@ add_action('after_setup_theme', function () {
         return "<?= " . __NAMESPACE__ . "\\asset_path({$asset}); ?>";
     });
 });
+
+/**
+ * Setup custom image sizes
+ */
+add_action('after_setup_theme', function () {
+    $image_sizes = [];
+}, 30);
