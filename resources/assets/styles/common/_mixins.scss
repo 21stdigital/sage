@@ -5,16 +5,19 @@
   @if type-of($number) == "number" and not unitless($number) {
     @return $number / ($number * 0 + 1);
   }
+
   @return $number;
 }
 
 @function calc-rem($size) {
   $remSize: $size / $root-font-size;
+
   @return #{$remSize}rem;
 }
 
 @function calc-em($size, $base-size) {
   $emSize: $size / $base-size;
+
   @return #{$emSize}em;
 }
 

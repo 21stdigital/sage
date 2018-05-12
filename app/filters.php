@@ -18,6 +18,14 @@ add_filter('body_class', function (array $classes) {
         $classes[] = 'sidebar-primary';
     }
 
+    // Remove unnecessary classes
+    $home_id_class = 'page-id-' . get_option('page_on_front');
+    $remove_classes = [
+        'page-template-default',
+        $home_id_class
+    ];
+    $classes = array_diff($classes, $remove_classes);
+
     /** Clean up class names for custom templates */
     $classes = array_map(function ($class) {
         return preg_replace(['/-blade(-php)?$/', '/^page-template-views/'], '', $class);
@@ -77,4 +85,30 @@ add_filter('tiny_mce_before_init', function ($settings) {
     $settings['toolbar1'] = 'formatselect,bold,italic,bullist,numlist,alignleft,aligncenter,alignright,link,spellchecker,dfw,wp_adv';
     $settings['toolbar2'] = 'pastetext,removeformat,charmap,undo,redo,wp_help';
     return $settings;
+});
+
+/**
+ * Remove the WordPress version from RSS feeds
+ */
+add_filter('the_generator', '__return_false');
+
+/**
+ * Clean up output of stylesheet <link> tags
+ */
+add_filter('style_loader_tag', function ($input) {
+    preg_match_all("!<link rel='stylesheet'\s?(id='[^']+')?\s+href='(.*)' type='text/css' media='(.*)' />!", $input, $matches);
+    if (empty($matches[2])) {
+        return $input;
+    }
+    // Only display media if it is meaningful
+    $media = $matches[3][0] !== '' && $matches[3][0] !== 'all' ? ' media="' . $matches[3][0] . '"' : '';
+    return '<link rel="stylesheet" href="' . $matches[2][0] . '"' . $media . '>' . "\n";
+});
+
+/**
+ * Clean up output of <script> tags
+ */
+add_filter('script_loader_tag', function ($input) {
+    $input = str_replace("type='text/javascript' ", '', $input);
+    return str_replace("'", '"', $input);
 });
