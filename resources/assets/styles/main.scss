@@ -12,8 +12,10 @@
 // @import "~some-node-module";
 
 /** Import theme styles */
+@import "common/mixins";
 @import "common/global";
 
 /** Blocks */
+@import "blocks/body";
 @import "blocks/header";
 @import "blocks/footer";
