@@ -140,34 +140,3 @@ function display_sidebar()
     isset($display) || $display = apply_filters('sage/display_sidebar', false);
     return $display;
 }
-
-/**
- * Retrieve all breadcrumbs
- * @param string $theme_location Name of the menu location
- * @return array Breadcrumbs
- */
-function breadcrumbs($theme_location = 'breadcrumb')
-{
-    return [];
-}
-
-function get_image_density_sizes($density, $name, $width, $height, $crop = true)
-{
-    return array_map(function ($density_factor) {
-        return [
-            'name' => $name . '@' . $density_factor . 'x',
-            'width' => $width * $density_factor,
-            'height' => $height * $density_factor,
-            'crop' => $crop,
-        ];
-    }, range(1, $density));
-}
-
-function add_image_size($name, $width = 0, $height = 0, $crop = true)
-{
-    if (function_exists('fly_add_image_size')) {
-        fly_add_image_size($name, $width, $height, $crop);
-    } else {
-        add_image_size($name, $width, $height, $crop);
-    }
-}

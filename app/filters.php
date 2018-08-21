@@ -13,18 +13,15 @@ add_filter('body_class', function (array $classes) {
         }
     }
 
+    /** Add a global class to everything.
+     *  We want it to come first, so stuff its filter does can be overridden.
+     */
+    array_unshift($classes, 'app');
+
     /** Add class if sidebar is active */
     if (display_sidebar()) {
         $classes[] = 'sidebar-primary';
     }
-
-    // Remove unnecessary classes
-    $home_id_class = 'page-id-' . get_option('page_on_front');
-    $remove_classes = [
-        'page-template-default',
-        $home_id_class
-    ];
-    $classes = array_diff($classes, $remove_classes);
 
     /** Clean up class names for custom templates */
     $classes = array_map(function ($class) {
@@ -78,37 +75,21 @@ add_filter('comments_template', function ($comments_template) {
 }, 100);
 
 /**
- * Remove unnecesarry stuff from TinyMCE
+ * Render WordPress searchform using Blade
  */
-add_filter('tiny_mce_before_init', function ($settings) {
-    $settings['block_formats'] = 'Paragraph=p;Heading 2=h2;Heading 3=h3;';
-    $settings['toolbar1'] = 'formatselect,bold,italic,bullist,numlist,alignleft,aligncenter,alignright,link,spellchecker,dfw,wp_adv';
-    $settings['toolbar2'] = 'pastetext,removeformat,charmap,undo,redo,wp_help';
-    return $settings;
+add_filter('get_search_form', function () {
+    return template('partials.searchform');
 });
 
 /**
- * Remove the WordPress version from RSS feeds
+ * Collect data for searchform.
  */
-add_filter('the_generator', '__return_false');
-
-/**
- * Clean up output of stylesheet <link> tags
- */
-add_filter('style_loader_tag', function ($input) {
-    preg_match_all("!<link rel='stylesheet'\s?(id='[^']+')?\s+href='(.*)' type='text/css' media='(.*)' />!", $input, $matches);
-    if (empty($matches[2])) {
-        return $input;
-    }
-    // Only display media if it is meaningful
-    $media = $matches[3][0] !== '' && $matches[3][0] !== 'all' ? ' media="' . $matches[3][0] . '"' : '';
-    return '<link rel="stylesheet" href="' . $matches[2][0] . '"' . $media . '>' . "\n";
-});
-
-/**
- * Clean up output of <script> tags
- */
-add_filter('script_loader_tag', function ($input) {
-    $input = str_replace("type='text/javascript' ", '', $input);
-    return str_replace("'", '"', $input);
+add_filter('sage/template/app/data', function ($data) {
+    return $data + [
+        'sf_action' => esc_url(home_url('/')),
+        'sf_screen_reader_text' => _x('Search for:', 'label', 'sage'),
+        'sf_placeholder' => esc_attr_x('Search &hellip;', 'placeholder', 'sage'),
+        'sf_current_query' => get_search_query(),
+        'sf_submit_text' => esc_attr_x('Search', 'submit button', 'sage'),
+    ];
 });
