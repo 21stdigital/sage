@@ -33,13 +33,13 @@ Install Sage using Composer from your WordPress themes directory (replace `your-
 
 ```shell
 # @ app/themes/ or wp-content/themes/
-$ composer create-project roots/sage your-theme-name
+$ composer create-project 21stdigital/sage your-theme-name
 ```
 
 To install the latest development version of Sage, add `dev-master` to the end of the command:
 
 ```shell
-$ composer create-project roots/sage your-theme-name dev-master
+$ composer create-project 21stdigital/sage your-theme-name dev-master
 ```
 
 During theme installation you will have options to update `style.css` theme headers, select a CSS framework, and configure Browsersync.
